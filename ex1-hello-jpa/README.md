@@ -21,3 +21,51 @@ persistence.xml 파일에서 javax.persistence.jdbc.url 값을 아래와 같이 
 ```
 <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
 ```
+
+
+영속성 컨텍스트
+엔티티를 영구 저장하는 환경 이라는 뜻
+EntityManager.persist(entity);
+
+디비에 저장하는 것이 아니라 entity를 영속성 컨텍스트라는 곳에 저장한다는 의미
+
+영속성 컨텍스트는 논리적인 개념
+눈에 보이지 않음
+엔티티 매니저를 통해서 영속성 컨텍스트에 접근
+=> 엔티티매니저 : 영속성 컨텍스트 (1:1)
+
+
+엔티티의 생명주기
+비영속(new/transient) -> 영속(managed) -> 준영속(detached) -> 삭제(removed)
+
+비영속
+객체를 생성하였지만 영속성 컨텍스트에 집어 넣지 않은 상태
+
+영속
+.persist(object)
+객체가 영속성 컨텍스트에 넣어진 상태
+디비에 저장되는 상태는 아니다.
+영속 상태가 된다고 해서 디비에 저장되는 것은 아니다
+트랜잭션 매니저가 커밋을 실행하는 시점에 저장됨.
+
+준영속
+detached
+객체가 영속성 컨텍스트에서 분리된 상태
+
+삭제
+removed
+데이터베이스에서 삭제된 상태
+
+영속성 컨텍스트의 이점
+1차 캐시
+동일성(identity) 보장
+트랜잭션 지원하는 쓰기 지연 (transactional write-behind)
+변경감지(Dirty Checking)
+지연로딩(Lazy Loading)
+
+1차 캐시
+.persist(member)
+PK로 설정한 값을 기준으로 객체가 저장되어 있음
+em.find()를 수행하면 영속성 컨텍스트 안에서 엔티티를 조회하여 가져옴
+1차 캐시에 없는 엔티티(예를 들어 member2)는 디비에서 조회하여 영속성 컨텍스트에 1차 캐시에 저장한 이후에 반환
+이후에 member2를 조회하면 영속성 컨텍스트 안에서 조회하여 가져옴
