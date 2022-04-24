@@ -26,6 +26,35 @@ public class JpaMain {
         // update
         dirtyCheck();
 
+        flush();
+
+    }
+
+    private static void flush() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member member = new Member(200L, "member200");
+            // 영속성 컨텍스트에 추가됨.
+            em.persist(member);
+
+            // INSERT 쿼리가 바로 실행됨.
+            // 1차
+            em.flush();;
+
+            System.out.println("===============================");
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 
     /**
