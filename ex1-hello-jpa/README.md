@@ -22,7 +22,6 @@ persistence.xml 파일에서 javax.persistence.jdbc.url 값을 아래와 같이 
 <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
 ```
 
-
 영속성 컨텍스트
 엔티티를 영구 저장하는 환경 이라는 뜻
 EntityManager.persist(entity);
@@ -33,7 +32,6 @@ EntityManager.persist(entity);
 눈에 보이지 않음
 엔티티 매니저를 통해서 영속성 컨텍스트에 접근
 => 엔티티매니저 : 영속성 컨텍스트 (1:1)
-
 
 엔티티의 생명주기
 비영속(new/transient) -> 영속(managed) -> 준영속(detached) -> 삭제(removed)
@@ -69,3 +67,44 @@ PK로 설정한 값을 기준으로 객체가 저장되어 있음
 em.find()를 수행하면 영속성 컨텍스트 안에서 엔티티를 조회하여 가져옴
 1차 캐시에 없는 엔티티(예를 들어 member2)는 디비에서 조회하여 영속성 컨텍스트에 1차 캐시에 저장한 이후에 반환
 이후에 member2를 조회하면 영속성 컨텍스트 안에서 조회하여 가져옴
+
+
+플러시
+영속석 컨텍스트의 변경 내용을 데이터베이스에 반영
+영속성 컨테스트의 상황과 데이터베이스를 맞춰줌
+
+플러시 발생
+dirty checking
+수정된 엔티티를 쓰기지연 SQL 저장소에 등록
+쓰기 지연 SQL 저장소의 쿼리를 데이터베이스에 전송(등록, 수정, 삭제 쿼리)
+
+영속성 컨텍스 플러시 방법
+em.flush() - 직접 호출할 일은 없지만 테스트를 위해서 숙지
+1차 캐시는 유지됨.
+트랜잭션 커밋 - 플러시 자동 호출
+JPQL 쿼리 실행 - 플러시 자동 호출
+JPQL은 어떠한 쿼리든 실행하면 바로 플러시 처리됨.
+
+플러시 모드 옵션
+em.setFlushMode(FlushModeType.COMMIT)
+FlushModeType.AUTO
+기본값. 커밋이나 쿼리를 실행할때 플러시
+FlushModeType.COMMIT
+커밋할때만 플러시
+
+플러시는
+영속성 컨텍스트를 비우지 않음
+영속성 컨텍스트의 변경내용을 데이터베이스에 동기화
+트랜잭션이라는 작업 단위가 중요 -> 커밋 직전에만 동기화 하면 됨
+동시성은 데이터베이스 트랜잭션에 위임해서 사용함.
+
+준영속 상태
+영속 -> 준영속
+영속 상태의 엔티티가 영속성 컨텍스트에서 분리(detached)
+영속성 컨텍스트가 제공하는 기능(Dirty checking 등)을 사용 못함
+em.detach(entity)
+특정 엔티티만 준영속 상태로 전환
+em.clear()
+영속성 컨텍스트를 완전히 초기화
+em.close()
+영속성 컨텍스트 종료

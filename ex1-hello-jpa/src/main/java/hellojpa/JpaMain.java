@@ -24,10 +24,41 @@ public class JpaMain {
         //lazyWrite();
 
         // update
-        dirtyCheck();
+        //dirtyCheck();
 
-        flush();
+        //flush();
 
+        detach();
+
+    }
+
+    private static void detach() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member member = em.find(Member.class, 200L);
+            member.setName("AAAA");
+            // 현재 memeber는 영속 상태 임.
+
+            // 영속성 컨텍스트에서 제외되는 엔티티
+            //em.detach(member);
+            em.clear();
+            Member member2 = em.find(Member.class, 200L);
+
+            System.out.println("===============================");
+            tx.commit();
+            // 영속성에서 제외된 엔티티는 커밋되지 않는다.
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 
     private static void flush() {
