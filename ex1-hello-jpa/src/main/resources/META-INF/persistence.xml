@@ -16,7 +16,15 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
-            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="create" />-->
+            <!-- 종료시 테이블 drop-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="create-drop" />-->
+
+
+            <!-- 테이블의 구조적 변경분만 반영-->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+
+
         </properties>
     </persistence-unit>
 </persistence>

@@ -15,7 +15,7 @@ public class JpaMain {
         // cache();
 
         // 1차 캐시 (다른 앤티티)
-        // cache2();
+        cache2();
 
         // 영속 엔티티의 동일설
         // equalObj();
@@ -28,7 +28,7 @@ public class JpaMain {
 
         //flush();
 
-        detach();
+        //detach();
 
     }
 

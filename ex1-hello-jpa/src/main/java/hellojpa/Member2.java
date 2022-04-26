@@ -21,6 +21,7 @@ public class Member2 {
     @Id
     private Long id;
     private String name;
+    private int age;
 
     public Member2(){}
 
