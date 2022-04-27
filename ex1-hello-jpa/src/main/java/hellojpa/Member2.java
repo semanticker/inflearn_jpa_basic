@@ -1,5 +1,6 @@
 package hellojpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,11 +16,12 @@ import javax.persistence.Table;
  * name 속성은 엔티티 이름과 동일하게 하면 되지 않는 경우
  * 설정해서 사용
  */
-@Table(name="MBR", schema = "", catalog = "")
+@Table(name="MBR"/*, schema = "", catalog = ""*/)
 public class Member2 {
 
     @Id
     private Long id;
+    @Column(unique = true, length = 10)
     private String name;
     private int age;
 

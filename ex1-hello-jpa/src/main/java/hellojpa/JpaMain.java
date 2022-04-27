@@ -15,7 +15,8 @@ public class JpaMain {
         // cache();
 
         // 1차 캐시 (다른 앤티티)
-        cache2();
+        //cache2();
+        cache3();
 
         // 영속 엔티티의 동일설
         // equalObj();
@@ -32,6 +33,27 @@ public class JpaMain {
 
     }
 
+    private static void cache3() {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member2 member1 = em.find(Member2.class, 101L);
+
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+
+    }
     private static void detach() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
