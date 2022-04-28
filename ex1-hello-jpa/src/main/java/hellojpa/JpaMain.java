@@ -31,8 +31,35 @@ public class JpaMain {
 
         //detach();
 
+        member3();
+
     }
 
+    private static void member3() {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member3 member3 = new Member3();
+            member3.setId(3L);
+            member3.setUsername("user01");
+            member3.setRoleType(RoleType.ADMIN);
+
+            em.persist(member3);
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+
+    }
     private static void cache3() {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");

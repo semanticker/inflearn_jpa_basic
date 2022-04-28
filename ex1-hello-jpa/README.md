@@ -108,3 +108,133 @@ em.clear()
 영속성 컨텍스트를 완전히 초기화
 em.close()
 영속성 컨텍스트 종료
+
+객채와 테이블 매핑
+
+앤티티 매핑
+객체와 테이블 매핑 : @Entity, @Table
+필드와 컬럼 매핑: @Column
+기본 키 매핑 : @Id
+연관관계 매핑: @ManyToOne, @JoinColumn
+
+@Entity
+@Entity가 붙은 클래스는 JPA가 관리, 엔티티
+JPA를 사용해서 테이블과 매핑할 클래스는 @Entity 필수
+주의
+
+- 기본 생성자 필수
+  파라메터가 없는 public 또는 protected 생성자
+- final 클래스, enum, interface, inner 클래스 사용X
+- 저장할 필드에 final 사용하면 안됨
+
+속성: name
+
+- JPA에서 사용할 엔티티 이름을 지정한다
+- 기본값: 클래스 이름을 그대로 사용(예: Member)
+  같은 클래스 이름이 없으면 가급적 기본값을 사용
+
+# 데이터베이스 스키마 자동 생성
+
+- 애플리케이션 실행할때 DDL을 자동 생성
+- 테이블 중심에서 객체 중심으로 설계 가능
+- DB Dialect을 활용해서 DB에 맞는 적절한 DDL 생성
+- **생성된 DDL은 개발장비에서만 사용**
+- 생성된 DDL은 운영서버에서는 사용하지 않거나 다듬은 후에 사용
+
+
+### 속성
+
+- hibernate.hbm2ddl.auto
+- create - 기존 테이블 삭제 후 다시 생성(Drop + Create)
+- create-drop - create와 같으나 종료시점에 테이블 DROP
+- update - 변경분만 반영(운영DB에는 사용하면 안됨)
+  - alter table과 같은 구조적 변경분만 반영.
+  - ex) 테이블을 삭제하지 않고 컬럼을 추가함
+  - 엔티티에서 필드를 삭제하면 alter table drop column 하지 않음.
+- validate - 엔티티 테이블이 정상 매핑되었는지만 확인
+  - 엔티티에 새로운 필드를 추가하면 테이블과 엔티티가 일치하는가만 확인함
+  - 일치하지 않으면 에러가 발생함.
+- none - 사용하지 않음
+  - 속성을 주석처리하거나 none으로 설정하면 됨.
+  - 실제로 지정된 값이 아님. 의미없는 값이나 관례상 적는 값임.
+
+### 주의
+
+- 운영장비에는 절대 create, create-drop, update 사용하면 안됨
+- 개발초기 create 또는 update
+- 테스트 서버에는 update 또는 validate
+- 스테이징과 운영서버는 validate 또는 none
+
+### DDL 생성 기능
+
+- 제약조건 추가 : 회원이름 필수, 10자 초과 하면 안됨
+  - @Column(unique = false, length = 10)
+    - age integer not null
+    - alter table MBR add constraint UK_4k9i8f9md75l3hth534jg2l2f unique (name)
+- DDL 생성 기능은 DDL을 자동 생성할 때만 사용되고 JPA의 실행 로직에는 영향을 주지 않는다.
+
+
+## 필드와 컬럼 매핑
+
+
+### 매핑 어노테이션 정리
+
+#### hibernate.hbmddl.auto
+
+- @Column - 컬럼매핑
+- @Temporal - 날짜 타입 매핑
+- @Enumerated - enum 타입 매핑
+- @Lob - BLOB, CLOB 매핑
+- @Transient - 특정 필드를 컬럼매핑 안함
+
+### @Column
+
+- name - 필드와 매핑할 테이블의 컬럼 이름
+- insertable - 등록 가능 여부
+- updatable - 수정 가능 여부
+- nullable - null 값 허용 여부. DDL
+- unique - 유니크 제약조건을 걸때 사용. DDL
+- columnDefinition - 컬럼 정보를 직접 기술. varchar(100) default 'EMPTY'
+- length - 문자 길이 제약 조건. String 타입만 사용. DDL
+- precision, scale - BigDecimal 타입에 사용. 소수점을 포함한 전체 자릿수.
+  scale은 소수의 자릿수. double, float 타입에는 적용되지 않음.
+
+### @Enumerated
+
+#### 자바 enum 타입을 매핑. ORDINAL 사용은 자제
+
+#### value
+
+- EnumType.ORDINAL : enum 순서를 데이터베이스에 저장 (기본값)
+- EnumType.STRING : enum 이름을 데이터베이스에 저장
+
+
+### @Temproal
+
+#### 날짜타입(java.util.Date, java.util.Calendar)를 매핑
+
+자바의 LocalDate 타입은 데이터베이스의 date
+
+자바의 LodalDateTime 타입은 데이터베이스의 timestamp
+
+#### value
+
+- TemporalType.DATE - 날짜, 데이터베이싀 date 타입과 매핑 2020-01-01
+- TemporalType.TIME - 시간, 데이터베이스 time 타입과 매핑 11:12:11
+- TemporalType.TIMESTAMP - 날짜와 시간, 데이터베이스 timestamp 타입과 매핑
+
+
+### @Lob
+
+#### 데이터베이스 BLOB, CLOB 타입과 매핑
+
+- @Lob에는 지정할 속성이 없음
+- 매핑 필드 타입이 문자면 CLOB, 아니면 BLOB 매핑
+  - CLOB - String, char[], java.sql.CLOB
+  - BLOB - byte[], java.sql.BLOB
+
+### @Transient
+
+필드매핑, 데이테이베이스 조회, 저장 안함
+
+주로 메모리상에서만 임시로 값을 보관
