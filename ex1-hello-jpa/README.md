@@ -238,3 +238,34 @@ JPA를 사용해서 테이블과 매핑할 클래스는 @Entity 필수
 필드매핑, 데이테이베이스 조회, 저장 안함
 
 주로 메모리상에서만 임시로 값을 보관
+
+
+
+## 키본키 매핑
+
+
+
+### 기본 키 매핑 어노테이션
+
+@Id
+
+@GeneratedValue
+
+@Id @GeneratedValue(strategy = GenerationType.AUTO)
+private Long id;
+
+
+
+### 기본 키 매핑 방법
+
+- 직접 할당 - @Id만 사용. 내가 직접 아이디를 할당하는 경우.
+- 자동 생성 (@GeneratedValue)
+  - IDENTITY - 데이터베이스에 위임. MySQL
+  - SEQUENCE - 데이터베이스 시퀀스 오브젝트 사용, ORACE
+    - @SequenceGenerator 필요
+    - strategy = GenerationType.SEQUENCE
+  - TABLE - 키 생성용 테이블 사용, 모든 DB에서 사용
+    - @TableGenerator 필요
+  - AUTO - 방언에 따라 자동 지정, 기본값
+    - strategy = GenerationType.AUTO (기본값)
+    - MySQL의 auto increment

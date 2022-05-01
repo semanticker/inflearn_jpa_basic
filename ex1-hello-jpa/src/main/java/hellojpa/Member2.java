@@ -10,13 +10,13 @@ import javax.persistence.Table;
  * 다른 패키지에 같은 이름을 사용하는 엔티티가 존재하는 경우
  * name 속성을 지정하여 중복된 이름을 다른 이름으로 설정한다.
  */
-@Entity(name="Member")
+//Entity(name="Member")
 
 /**
  * name 속성은 엔티티 이름과 동일하게 하면 되지 않는 경우
  * 설정해서 사용
  */
-@Table(name="MBR"/*, schema = "", catalog = ""*/)
+//Table(name="MBR"/*, schema = "", catalog = ""*/)
 public class Member2 {
 
     @Id

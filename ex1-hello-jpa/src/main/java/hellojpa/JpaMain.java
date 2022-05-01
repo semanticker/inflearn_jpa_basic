@@ -16,7 +16,7 @@ public class JpaMain {
 
         // 1차 캐시 (다른 앤티티)
         //cache2();
-        cache3();
+        //cache3();
 
         // 영속 엔티티의 동일설
         // equalObj();
@@ -31,8 +31,34 @@ public class JpaMain {
 
         //detach();
 
-        member3();
+        //member3();
 
+        // 기본키 매핑
+        member4();
+
+    }
+
+    private static void member4() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member4 member4  = new Member4();
+            //member4.setId("ID_4");
+            member4.setUsername("C");
+
+            em.persist(member4);
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 
     private static void member3() {
