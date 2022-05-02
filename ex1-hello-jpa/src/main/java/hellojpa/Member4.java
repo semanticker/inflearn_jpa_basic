@@ -9,8 +9,8 @@ import java.util.Date;
 @Table(name = "MEMBER")
 public class Member4 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String username;
@@ -18,11 +18,11 @@ public class Member4 {
     public Member4() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

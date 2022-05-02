@@ -34,10 +34,37 @@ public class JpaMain {
         //member3();
 
         // 기본키 매핑
+        // strategy = GenerationType.IDENTIT
         member4();
+
+        // 시퀀스 전략
+        // strategy = GenerationType.SEQUENCE
+        member5();
 
     }
 
+    private static void member5() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member5 member5  = new Member5();
+            //member4.setId("ID_4");
+            member5.setUsername("C");
+
+            em.persist(member5);
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
     private static void member4() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -60,7 +87,6 @@ public class JpaMain {
             emf.close();
         }
     }
-
     private static void member3() {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -135,7 +161,6 @@ public class JpaMain {
             emf.close();
         }
     }
-
     private static void flush() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
