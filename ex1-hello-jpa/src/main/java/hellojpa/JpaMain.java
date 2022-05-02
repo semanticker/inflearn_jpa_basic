@@ -35,12 +35,40 @@ public class JpaMain {
 
         // 기본키 매핑
         // strategy = GenerationType.IDENTIT
-        member4();
+        //member4();
 
-        // 시퀀스 전략
+        // 기본키 시퀀스 전략
         // strategy = GenerationType.SEQUENCE
-        member5();
+        //member5();
 
+        // 기본키 테이블 전략
+        // strategy = GenerationType.TABLE
+        member6();
+
+
+    }
+
+    private static void member6() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Member6 member6  = new Member6();
+            //member4.setId("ID_4");
+            member6.setUsername("C");
+
+            em.persist(member6);
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 
     private static void member5() {
