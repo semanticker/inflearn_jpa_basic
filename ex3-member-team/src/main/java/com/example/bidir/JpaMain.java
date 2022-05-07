@@ -32,6 +32,7 @@ public class JpaMain {
             member.setTeam(team);
             em.persist(member);
 
+            // 이걸 해줘야 DB에서 값을 가져옴
             em.flush();
             em.clear();
 
