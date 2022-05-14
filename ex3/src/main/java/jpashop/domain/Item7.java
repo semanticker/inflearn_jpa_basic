@@ -17,6 +17,6 @@ public class Item7 {
     private int stockQuantity;
 
     @ManyToMany(mappedBy = "items")
-    private List<Category> categoryList = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
 }
