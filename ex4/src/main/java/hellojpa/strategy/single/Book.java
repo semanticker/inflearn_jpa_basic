@@ -1,10 +1,10 @@
-package hellojpa.strategy.join;
+package hellojpa.strategy.single;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@DiscriminatorValue("Book")
+@Table(name = "Book2")
 public class Book extends Item {
 
     private String author;

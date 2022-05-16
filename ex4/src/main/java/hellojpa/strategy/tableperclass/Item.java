@@ -1,10 +1,10 @@
-package hellojpa.strategy.join;
+package hellojpa.strategy.tableperclass;
 
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="DTYPE")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Item3")
 public abstract class Item {
     @Id @GeneratedValue
     private Long id;

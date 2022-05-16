@@ -1,10 +1,10 @@
-package hellojpa.strategy.join;
+package hellojpa.strategy.single;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@DiscriminatorValue("Movie")
+@Table(name = "Movie2")
 public class Movie extends Item {
 
     private String director;
