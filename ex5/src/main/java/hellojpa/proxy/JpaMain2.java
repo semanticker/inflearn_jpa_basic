@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class JpaMain {
+public class JpaMain2 {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -22,19 +22,14 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // join
-            /*Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.username = " + findMember.getUsername());*/
+            Member refMember = em.getReference(Member.class, member.getId());
+            System.out.println("refMember = " + refMember.getClass()); // Proxy
 
-            // lazy loading?
-            Member findMember2 = em.getReference(Member.class, member.getId());
-            System.out.println("=====================");
-            System.out.println("findMember = " + findMember2.getClass());
-            System.out.println("findMember2.id = " + findMember2.getId());
-            System.out.println("findMember2.username = " + findMember2.getUsername());
-            //printMember(member);
-            //printMemberAndTeam(member);
+            em.detach(refMember); // 에러 발생
+            em.close(); // 에러 발생
+            em.clear(); // 에러 발생
+
+            refMember.getUsername(); // 영속성 컨텍스트에서 제외된 프록시 객체를 초기화 하면 에러 발생
 
             tx.commit();
         } catch (Exception e) {

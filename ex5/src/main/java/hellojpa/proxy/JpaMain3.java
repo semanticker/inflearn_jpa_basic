@@ -1,11 +1,10 @@
 package hellojpa.proxy;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import org.hibernate.Hibernate;
 
-public class JpaMain {
+import javax.persistence.*;
+
+public class JpaMain3 {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -14,7 +13,6 @@ public class JpaMain {
         tx.begin();
 
         try {
-
             Member member = new Member();
             member.setUsername("hello");
             em.persist(member);
@@ -22,19 +20,16 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // join
-            /*Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.username = " + findMember.getUsername());*/
+            Member refMember = em.getReference(Member.class, member.getId());
+            System.out.println("refMember = " + refMember.getClass()); // Proxy
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember)); // not loading
 
-            // lazy loading?
-            Member findMember2 = em.getReference(Member.class, member.getId());
-            System.out.println("=====================");
-            System.out.println("findMember = " + findMember2.getClass());
-            System.out.println("findMember2.id = " + findMember2.getId());
-            System.out.println("findMember2.username = " + findMember2.getUsername());
-            //printMember(member);
-            //printMemberAndTeam(member);
+            Hibernate.initialize(refMember);
+
+            //refMember.getUsername(); // 강제 초기화
+            System.out.println("refMember = " + refMember.getClass()); // Proxy
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember)); // not loading
+
 
             tx.commit();
         } catch (Exception e) {
