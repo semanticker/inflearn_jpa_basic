@@ -1,4 +1,4 @@
-package hellojpa;
+package hellojpa.valuetypeshare;
 
 import javax.persistence.Embeddable;
 
@@ -26,12 +26,12 @@ public class Address {
         this.city = city;
     }
 
-    public String getStree() {
+    public String getStreet() {
         return street;
     }
 
-    public void setStree(String stree) {
-        this.street = stree;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getZipcode() {

@@ -1,7 +1,6 @@
-package hellojpa;
+package hellojpa.start;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name="Member14")

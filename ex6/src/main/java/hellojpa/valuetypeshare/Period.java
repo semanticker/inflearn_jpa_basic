@@ -1,4 +1,4 @@
-package hellojpa;
+package hellojpa.valuetypeshare;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package hellojpa;
+package hellojpa.start;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
