@@ -58,6 +58,8 @@ public class JpaMain {
             findMember.getFavoriteFoods().remove("치킨");
             findMember.getFavoriteFoods().add("한식");
 
+            findMember.getAddressHistory().remove(new Address("old-city", "old-street", "200000"));
+            findMember.getAddressHistory().add(new Address("new-city1", "street", "10000"));
 
             tx.commit();
         } catch (Exception e) {
