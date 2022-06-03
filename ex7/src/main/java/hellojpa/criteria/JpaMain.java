@@ -1,4 +1,4 @@
-package hellojpa.criteriabuilder;
+package hellojpa.criteria;
 
 
 import hellojpa.start.Member;
