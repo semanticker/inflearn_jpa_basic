@@ -44,3 +44,23 @@
 - 동적쿼리 작성 편리함
 - 단수하고 쉬움
 - 실무 사용 권장
+
+### 네이티브 SQL 소개
+- JPA가 제공하는 SQL을 직접 사용하는 기능
+- JPQL로 해결할 수 없는 특정 데이터베이스에 의존적인 기능
+- 예) 오라큰 CONNECT BY, 특정 DB만 사용하는 SQL 힌트
+
+### JDBC 직접 사용, SpringJdbcTemplate 등
+- JPA를 사용하면서 JDBC 커넥션을 직접 사용하거나, 스프링 JdbcTemplate, 마이바티스등을 함께 사용 가능
+- 단 영속성 컨텍스트를 적절한 시점에 강제로 플러시 필요
+- 예) JPA를 우회해서 SQL을 실행하기 직전에 영속성 컨텍스트 수동 플러시
+
+
+## JPQL(Java Persistence Query Language)
+
+### JPA는 다양한 쿼리 방법을 지원
+- **JPQL** <= 철저하게 잘 해야함
+- JPA Criteria
+- **QueryDSL**
+- 네이티브 SQL
+- JDBC API 직접사용, MyBatis, SpringJdbcTemplate 함께 사용
