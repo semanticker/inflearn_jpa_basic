@@ -23,7 +23,7 @@ public class JpaMain {
             em.persist(team);
 
             hellojpa.jpqltype.Member member = new hellojpa.jpqltype.Member();
-            member.setUsername("member1");
+            member.setUsername(null);
             member.setAge(10);
             member.setType(MemberType.ADMIN);
 
@@ -34,62 +34,43 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // JPQL 타입 표현
-            String query = "select m.username, 'HELLO', TRUE from hellojpa.jpqltype.Member m ";
-            List<Object[]> resultList = em.createQuery(query)
+            String query =
+                    "select " +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else  '일반요금' " +
+                            " end " +
+                            "from hellojpa.jpqltype.Member m ";
+
+            List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
 
-            for (Object[] objects : resultList) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
+            for (String s : resultList) {
+                System.out.println("s = " + s);
             }
 
-            // ENUM 타입 조건 추가
-            String query2 = "select m.username, 'HELLO', TRUE from hellojpa.jpqltype.Member m " +
-                    "where m.type = hellojpa.jpqltype.MemberType.ADMIN";
-            List<Object[]> resultList2 = em.createQuery(query2)
+            // 이름이 없는 회원을 '이름 없는 회원'으로 표시함.
+            String query2 =
+                    "select coalesce(m.username, '이름 없는 회원') " +
+                            "from hellojpa.jpqltype.Member m ";
+
+            List<String> resultList2 = em.createQuery(query2, String.class)
                     .getResultList();
 
-            for (Object[] objects : resultList2) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
+            for (String s : resultList2) {
+                System.out.println("s = " + s);
             }
 
-            //
-            String query3 = "select m.username, 'HELLO', TRUE from hellojpa.jpqltype.Member m " +
-                    "where m.type = :userType";
+            // 사용자 이름이 '관리자'면 null을 반환 하고 나머지는 본인의 이름을 반환
+            String query3 =
+                    "select nullif(m.username, '관리자') " +
+                            "from hellojpa.jpqltype.Member m ";
 
-            List<Object[]> resultList3 = em.createQuery(query3)
-                    .setParameter("userType", MemberType.ADMIN)
+            List<String> resultList3 = em.createQuery(query3, String.class)
                     .getResultList();
 
-            for (Object[] objects : resultList3) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
-            }
-
-            Book book = new Book();
-            book.setName("JPA");
-            book.setAuthor("김영한");
-
-            em.persist(book);
-
-            String query4 = "select i from hellojpa.jpqltype.Item i where type(i) = hellojpa.jpqltype.Book";
-            em.createQuery(query4, Item.class).getResultList();
-
-            String query5 = "select m.username, 'HELLO', TRUE from hellojpa.jpqltype.Member m " +
-                    "where m.age between 0 and 10";
-
-            List<Object[]> resultList5 = em.createQuery(query5)
-                    .getResultList();
-
-            for (Object[] objects : resultList5) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
+            for (String s : resultList2) {
+                System.out.println("s = " + s);
             }
 
             tx.commit();
