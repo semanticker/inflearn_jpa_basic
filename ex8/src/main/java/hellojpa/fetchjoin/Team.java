@@ -1,11 +1,11 @@
-package hellojpa;
+package hellojpa.fetchjoin;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TEAM25")
+@Table(name = "TEAM26")
 public class Team {
 
     @Id

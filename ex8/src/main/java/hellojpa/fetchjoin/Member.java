@@ -1,10 +1,9 @@
-package hellojpa;
-
+package hellojpa.fetchjoin;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Member25")
+@Table(name = "Member26")
 public class Member {
 
     @Id
