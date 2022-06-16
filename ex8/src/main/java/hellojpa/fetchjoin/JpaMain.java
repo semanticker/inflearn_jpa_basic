@@ -62,6 +62,36 @@ public class JpaMain {
                 System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
             }
 
+            // fetch join
+            String query3 = "select t from hellojpa.fetchjoin.Team t join fetch t.members";
+
+            List<Team> resultList3 = em.createQuery(query3, Team.class)
+                    .getResultList();
+
+            for (Team team : resultList3) {
+                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("    member = " + member);
+
+                }
+            }
+
+            // distinct
+            String query4 = "select distinct t from hellojpa.fetchjoin.Team t join fetch t.members";
+
+            List<Team> resultList4 = em.createQuery(query4, Team.class)
+                    .getResultList();
+
+            System.out.println("resultList4 = " + resultList4.size());
+
+            /*for (Team team : resultList4) {
+                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("    member = " + member);
+
+                }
+            }
+*/
 
 
 
