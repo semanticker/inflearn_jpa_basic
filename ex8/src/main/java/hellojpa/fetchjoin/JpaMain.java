@@ -84,14 +84,33 @@ public class JpaMain {
 
             System.out.println("resultList4 = " + resultList4.size());
 
-            /*for (Team team : resultList4) {
-                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println("    member = " + member);
 
+            // 페이징 : 이렇게 처리하면 안됨.
+            String query5 = "select  t from hellojpa.fetchjoin.Team t join fetch t.members ㅡ";
+
+            List<Team> resultList5 = em.createQuery(query5, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(1)
+                    .getResultList();
+
+            System.out.println("resultList5 = " + resultList5.size());
+
+            // 팀 조회 : 멤버를 레이지로 로딩 => 성능이 안나옴
+            String query6 = "select  t from hellojpa.fetchjoin.Team t";
+
+            List<Team> resultList6 = em.createQuery(query6, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
+                    .getResultList();
+
+            System.out.println("resultList6 = " + resultList6.size());
+
+            for (Team team : resultList6) {
+                System.out.println("team = " + team.getName() + "|members=" + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("member = " + member);
                 }
             }
-*/
 
 
 
